@@ -26,10 +26,10 @@ const questions = [{
 //function to initialize app
 function init() {
     inquirer.prompt(questions)
-    .then((response) => {
-        console.log(response);
+    .then(({action}) => {
+        console.log(action);
         //Something like a switch statement here to call the specific action they would like to take
-        switch(response) {
+        switch(action) {
             case 'View All Employees':
                 getAllEmployees();
                 break;
@@ -56,18 +56,31 @@ function init() {
 };
 
 function getAllEmployees() {
+    console.log("i ran");
     // simple query
     db.query(
-        'SELECT * FROM `table` WHERE `name` = "Page" AND `age` > 45',
+        'SELECT * FROM `employees`',
         function(err, results, fields) {
-        console.log(results); // results contains rows returned by server
-        console.log(fields); // fields contains extra meta data about results, if available
-        }
-    );
+        console.table(results); // results contains rows returned by server
+        //console.log(fields); // fields contains extra meta data about results, if available
+        return setTimeout(init, 5000)
+    });
 };
 
-function addEmployee() {
+async function addEmployee() {
+    //Have a validation for inputs, so if a specific phrase is typed then it will go back to the main menu.
+    //Can put in a confirm option before running insert statement
+    // db.query("Select * from roles where department_id = ?",[answers.id], function(err, res, fields){
 
+    // })
+    console.log(await getDepartmentChoices(2));
+
+};
+
+async function getDepartmentChoices(department_id) {
+    const [data] = await db.promise().query("Select * from roles where department_id = ?",[department_id])
+    console.log("data",data);
+    return data.map(role => ({name: role.title, value: role.id}))
 };
 
 function updateEmployeeRole() {
