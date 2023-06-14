@@ -13,6 +13,7 @@ const questions = [{
 function init() {
     inquirer.prompt(questions)
     .then((response) => {
+        console.log(response);
         //Something like a switch statement here to call the specific action they would like to take
         getAllEmployees();
         addEmployee();
