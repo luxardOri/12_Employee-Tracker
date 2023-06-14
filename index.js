@@ -13,10 +13,44 @@ const questions = [{
 function init() {
     inquirer.prompt(questions)
     .then((response) => {
-        //need to add in functions for each of the actions
+        //Something like a switch statement here to call the specific action they would like to take
+        getAllEmployees();
+        addEmployee();
+        updateEmployeeRole();
+        getAllRoles();
+        addRole();
+        getAllDepartments();
+        addDepartment();
 });
+};
 
-}
+function getAllEmployees() {
+
+};
+
+function addEmployee() {
+
+};
+
+function updateEmployeeRole() {
+
+};
+
+function getAllRoles() {
+
+};
+
+function addRole() {
+
+};
+
+function getAllDepartments() {
+
+};
+
+function addDepartment() {
+    
+};
 
 // Function call to initialize app
 init();
