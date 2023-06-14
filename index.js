@@ -1,5 +1,19 @@
 // Call the libraries we are going to be using
 const inquirer = require('inquirer');
+const mysql = require('mysql2');
+
+// Connect to database
+const db = mysql.createConnection(
+    {
+      host: 'localhost',
+      // MySQL username,
+      user: 'root',
+      // MySQL password
+      password: 'Bootcamp',
+      database: 'employee_db'
+    },
+    console.log(`Connected to the employee_db database.`)
+  );  
 
 // Ask user about what action they would like to take
 const questions = [{
