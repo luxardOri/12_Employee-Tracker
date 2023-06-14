@@ -29,18 +29,41 @@ function init() {
     .then((response) => {
         console.log(response);
         //Something like a switch statement here to call the specific action they would like to take
-        getAllEmployees();
-        addEmployee();
-        updateEmployeeRole();
-        getAllRoles();
-        addRole();
-        getAllDepartments();
-        addDepartment();
+        switch(response) {
+            case 'View All Employees':
+                getAllEmployees();
+                break;
+            case 'Add Employee':
+                addEmployee();
+                break;
+            case 'Update Employee Role':
+                updateEmployeeRole();
+                break;
+            case 'View All Roles':
+                getAllRoles();
+                break;
+            case 'Add Role':
+                addRole();
+                break;
+            case 'View All Departments':
+                getAllDepartments();
+                break;
+            case 'Add Department':
+                addDepartment();
+                break;
+        }
 });
 };
 
 function getAllEmployees() {
-
+    // simple query
+    db.query(
+        'SELECT * FROM `table` WHERE `name` = "Page" AND `age` > 45',
+        function(err, results, fields) {
+        console.log(results); // results contains rows returned by server
+        console.log(fields); // fields contains extra meta data about results, if available
+        }
+    );
 };
 
 function addEmployee() {
