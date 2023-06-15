@@ -63,7 +63,7 @@ function getAllEmployees() {
         function(err, results, fields) {
         console.table(results); // results contains rows returned by server
         //console.log(fields); // fields contains extra meta data about results, if available
-        return setTimeout(init, 5000)
+        return setTimeout(init, 3000)
     });
 };
 
