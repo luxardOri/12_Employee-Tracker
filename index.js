@@ -56,10 +56,9 @@ function init() {
 };
 
 function getAllEmployees() {
-    console.log("i ran");
     // simple query
     db.query(
-        'SELECT * FROM `employees`',
+        'select e.id as employee_id,concat(e.first_name," ",e.last_name) as employee_name,r.title, d.name as department_name, CONCAT("$", FORMAT(r.salary, 0)) as salary,case when manager_id is null then "Is a Manager" else (select concat(first_name, " ",last_name) as manager_name from employees e2 where e2.id = e.manager_id) END AS manager_name from employees e join roles r on e.role_id = r.id join departments d on r.department_id = d.id;',
         function(err, results, fields) {
         console.table(results); // results contains rows returned by server
         //console.log(fields); // fields contains extra meta data about results, if available
@@ -73,7 +72,9 @@ async function addEmployee() {
     // db.query("Select * from roles where department_id = ?",[answers.id], function(err, res, fields){
 
     // })
+
     console.log(await getDepartmentChoices(2));
+    return setTimeout(init, 3000)
 
 };
 
@@ -88,7 +89,14 @@ function updateEmployeeRole() {
 };
 
 function getAllRoles() {
-
+    // simple query
+    db.query(
+        'select r.id as role_id, title, d.name as department_name from roles r join departments d on r.department_id = d.id;',
+        function(err, results, fields) {
+        console.table(results); // results contains rows returned by server
+        //console.log(fields); // fields contains extra meta data about results, if available
+        return setTimeout(init, 3000)
+    });
 };
 
 function addRole() {
@@ -96,7 +104,14 @@ function addRole() {
 };
 
 function getAllDepartments() {
-
+    // simple query
+    db.query(
+        'select id as role_id, name as department_name from departments;',
+        function(err, results, fields) {
+        console.table(results); // results contains rows returned by server
+        //console.log(fields); // fields contains extra meta data about results, if available
+        return setTimeout(init, 3000)
+    });
 };
 
 function addDepartment() {
