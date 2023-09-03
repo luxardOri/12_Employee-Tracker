@@ -223,7 +223,7 @@ async function updateEmployeeRole() {
 function getAllRoles() {
   // simple query
   db.query(
-    "select r.id as role_id, title, d.name as department_name from roles r join departments d on r.department_id = d.id;",
+    "select r.id as Role_Id, Title, d.name as Department_Name, CONCAT('$', FORMAT(r.salary, 0)) as Starting_Salary from roles r join departments d on r.department_id = d.id;",
     function (err, results, fields) {
       console.table(results); // results contains rows returned by server
       //console.log(fields); // fields contains extra meta data about results, if available
@@ -232,31 +232,46 @@ function getAllRoles() {
   );
 }
 
-function addRole() {
-  const departments = queryDepartments();
+async function addRole() {
+  const departments = await queryDepartments();
   // ask user the role name
   inquirer
-    .prompt({
-      type: "list",
-      name: "dept",
-      message: "What is department do you want to add this role to?",
-      choices: departments.map((dept) => ({
-        name: dept.name,
-        value: dept.id,
-      })),
-    })
+    .prompt([
+      {
+        type: "list",
+        name: "dept",
+        message: "What is department do you want to add this role to?",
+        choices: departments.map((dept) => ({
+          name: dept.name,
+          value: dept.id,
+        })),
+      },
+      {
+        type: "input",
+        name: "salary",
+        message: "What is the starting salary for this role?",
+      },
+      {
+        type: "input",
+        name: "roleName",
+        message: "What is this role called?",
+      },
+    ])
     .then((answer) => {
       console.log("Role has been added.");
       // insert response into table
-      //   db.query(
-      //     "INSERT INTO roles (name) VALUES (?)",
-      //     [answer.role_name],
-
-      //     function (err) {
-      //       if (err) throw err;
-      //       return setTimeout(init, 1000);
-      //     }
-      //   );
+      db.query(
+        "INSERT INTO roles SET ?",
+        {
+          title: answer.roleName,
+          salary: answer.salary,
+          department_id: answer.dept,
+        },
+        function (err) {
+          if (err) throw err;
+          return setTimeout(init, 1000);
+        }
+      );
     });
 }
 
