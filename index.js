@@ -97,6 +97,24 @@ async function queryManagers() {
   });
 }
 
+async function queryEmployees() {
+  return new Promise((resolve, reject) => {
+    db.query("select * from employees", function (err, results) {
+      if (err) return reject(err);
+      resolve(results);
+    });
+  });
+}
+
+async function queryDepartments() {
+  return new Promise((resolve, reject) => {
+    db.query("select * from departments", function (err, results) {
+      if (err) return reject(err);
+      resolve(results);
+    });
+  });
+}
+
 async function addEmployee() {
   const roles = await queryRoles();
   const managers = await queryManagers();
@@ -157,7 +175,50 @@ async function addEmployee() {
     });
 }
 
-function updateEmployeeRole() {}
+async function updateEmployeeRole() {
+  const employees = await queryEmployees();
+  const roles = await queryRoles();
+
+  inquirer
+    .prompt([
+      {
+        name: "empUpdate",
+        message: "Which employee would you like to update?",
+        type: "list",
+        choices: employees.map((employee) => ({
+          name: employee.first_name + " " + employee.last_name,
+          value: employee.id,
+        })),
+      },
+      {
+        name: "roleUpdate",
+        type: "list",
+        message: "What's the updated role?",
+        choices: roles.map((role) => ({
+          name: role.title,
+          value: role.id,
+        })),
+      },
+    ])
+    .then((answers) => {
+      db.query(
+        "UPDATE employees SET ? WHERE ?",
+        [
+          {
+            role_id: answers.roleUpdate,
+          },
+          {
+            id: answers.empUpdate,
+          },
+        ],
+        function (err) {
+          if (err) throw err;
+        }
+      );
+      console.log(`This person has been updated.`);
+      return setTimeout(init, 2000);
+    });
+}
 
 function getAllRoles() {
   // simple query
@@ -172,25 +233,30 @@ function getAllRoles() {
 }
 
 function addRole() {
+  const departments = queryDepartments();
   // ask user the role name
   inquirer
     .prompt({
-      type: "input",
-      name: "role_name",
-      message: "What is the new role you would like to add?",
+      type: "list",
+      name: "dept",
+      message: "What is department do you want to add this role to?",
+      choices: departments.map((dept) => ({
+        name: dept.name,
+        value: dept.id,
+      })),
     })
     .then((answer) => {
-      console.log("Role " + answer.dept_name + " has been added.");
+      console.log("Role has been added.");
       // insert response into table
-      db.query(
-        "INSERT INTO roles (name) VALUES (?)",
-        [answer.role_name],
+      //   db.query(
+      //     "INSERT INTO roles (name) VALUES (?)",
+      //     [answer.role_name],
 
-        function (err) {
-          if (err) throw err;
-          return setTimeout(init, 1000);
-        }
-      );
+      //     function (err) {
+      //       if (err) throw err;
+      //       return setTimeout(init, 1000);
+      //     }
+      //   );
     });
 }
 
