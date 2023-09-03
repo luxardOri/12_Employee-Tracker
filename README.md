@@ -1,5 +1,6 @@
 # Employee Tracker
-  [![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/)
+
+[![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/)
 
 ## Description
 
@@ -11,22 +12,44 @@ This is an application called the Employee Tracker. From the command line, we'll
 - [Usage](#usage)
 - [Credits](#credits)
 - [License](#license)
-    
+
 ## Installation
 
+Step 1: log into mysql and run:
 
+```
+source db/schema.sql
+
+source db/seeds.sql
+```
+
+Step 2: In your terminal, run:
+
+```
+npm i
+```
+
+Step 3: Once everything is installed, db is seeded, and you start the application by using:
+
+```
+node index.js
+```
 
 ## Usage
 
+![alt text](assets/images/employeeTracker.jpg)
 
+To see a walkthrough of how to use the application please use the link below:  
+https://drive.google.com/file/d/1gPebmQ8woKz__jjluHRcI3xliBd0yuqO/view
 
 ## Credits
 
 Referenced back to activites  
-Tutoring help (Erik Hirsch)
+Tutoring help (Erik Hirsch)  
+Office Hour help: Keyvon (TA)
 
 ## License
-        
+
 This is free and unencumbered software released into the public domain.
 
 Anyone is free to copy, modify, publish, use, compile, sell, or
